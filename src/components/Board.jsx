@@ -1,23 +1,35 @@
 import React from 'react';
 import Squre from './Squre';
 
-const Board = () => {
+const Board = ({ board, handelClickUpdate }) => {
+  // Only work to show spacify array position
+  const renderSquer = position => {
+    return (
+      <Squre
+        value={board[position]}
+        onClick={() => {
+          handelClickUpdate(position);
+        }}
+      />
+    );
+  };
+
   return (
     <div className="board">
       <div className="board-row">
-        <Squre value={1} />
-        <Squre value={2} />
-        <Squre value={3} />
+        {renderSquer(0)}
+        {renderSquer(1)}
+        {renderSquer(2)}
       </div>
       <div className="board-row">
-        <Squre value={4} />
-        <Squre value={5} />
-        <Squre value={6} />
+        {renderSquer(3)}
+        {renderSquer(4)}
+        {renderSquer(5)}
       </div>
       <div className="board-row">
-        <Squre value={7} />
-        <Squre value={8} />
-        <Squre value={9} />
+        {renderSquer(6)}
+        {renderSquer(7)}
+        {renderSquer(8)}
       </div>
     </div>
   );
