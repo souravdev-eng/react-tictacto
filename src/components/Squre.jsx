@@ -1,15 +1,13 @@
 import React from 'react';
 
 const Squre = ({ value, onClick, isWinningSquare }) => {
-  console.log(value);
   return (
     <button
       type="button"
-      className="square"
       onClick={onClick}
-      style={{
-        fontWeight: isWinningSquare ? 'bold' : 'normal',
-      }}
+      className={`square ${isWinningSquare ? 'winning' : ''} ${
+        value === 'X' ? 'text-green' : 'text-orange'
+      }`}
     >
       {value}
     </button>
