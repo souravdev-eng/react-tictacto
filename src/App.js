@@ -4,31 +4,41 @@ import { calculateWinner } from './helper';
 import './style/root.scss';
 
 const App = () => {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState(false);
-  const winner = calculateWinner(board);
+  //* Define our default state into a array of an object
+  const [history, setHistory] = useState([
+    { board: Array(9).fill(null), isXNext: true },
+  ]);
+  //* Setting up our movement index
+  const [currentMove, setCurrentMove] = useState(0);
+  const current = history[currentMove];
+
+  const winner = calculateWinner(current.board);
   const message = winner
     ? `Winner is ${winner}`
-    : `Next player is ${isXNext ? 'X' : 'O'}`;
+    : `Next player is ${current.isXNext ? 'X' : 'O'}`;
+
   const handelClickUpdate = position => {
-    if (board[position] || winner) {
+    if (current.board[position] || winner) {
       return;
     }
-    setBoard(prev => {
-      return prev.map((squ, pos) => {
+    setHistory(prev => {
+      const last = prev[prev.length - 1];
+
+      const newBord = last.board.map((squ, pos) => {
         if (pos === position) {
-          return isXNext ? 'X' : 'O';
+          return last.isXNext ? 'X' : 'O';
         }
         return squ;
       });
+      return prev.concat({ board: newBord, isXNext: !last.isXNext });
     });
-    setIsXNext(prev => !prev);
+    setCurrentMove(prev => prev + 1);
   };
   return (
     <div className="app">
       <h1>Tic Tac To</h1>
       <h2>{message}</h2>
-      <Board board={board} handelClickUpdate={handelClickUpdate} />
+      <Board board={current.board} handelClickUpdate={handelClickUpdate} />
     </div>
   );
 };
