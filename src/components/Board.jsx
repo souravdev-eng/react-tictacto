@@ -1,15 +1,17 @@
 import React from 'react';
 import Squre from './Squre';
 
-const Board = ({ board, handelClickUpdate }) => {
+const Board = ({ board, handelClickUpdate, winningSquare }) => {
   // Only work to show spacify array position
   const renderSquer = position => {
+    const isWinningSquare = winningSquare.includes(position);
     return (
       <Squre
         value={board[position]}
         onClick={() => {
           handelClickUpdate(position);
         }}
+        isWinningSquare={isWinningSquare}
       />
     );
   };

@@ -5,19 +5,16 @@ import StatusMessage from './components/StatusMessage';
 import { calculateWinner } from './helper';
 import './style/root.scss';
 
+const APP_STATE = [{ board: Array(9).fill(null), isXNext: true }];
+
 const App = () => {
   //* Define our default state into a array of an object
-  const [history, setHistory] = useState([
-    { board: Array(9).fill(null), isXNext: true },
-  ]);
+  const [history, setHistory] = useState(APP_STATE);
   //* Setting up our movement index
   const [currentMove, setCurrentMove] = useState(0);
   const current = history[currentMove];
 
-  const winner = calculateWinner(current.board);
-  const message = winner
-    ? `Winner is ${winner}`
-    : `Next player is ${current.isXNext ? 'X' : 'O'}`;
+  const { winner, winningSquare } = calculateWinner(current.board);
 
   const handelClickUpdate = position => {
     if (current.board[position] || winner) {
@@ -40,11 +37,23 @@ const App = () => {
     setCurrentMove(move);
   };
 
+  const newGame = () => {
+    setHistory(APP_STATE);
+    setCurrentMove(0);
+  };
+
   return (
     <div className="app">
       <h1>Tic Tac To</h1>
       <StatusMessage winner={winner} current={current} />
-      <Board board={current.board} handelClickUpdate={handelClickUpdate} />
+      <Board
+        board={current.board}
+        handelClickUpdate={handelClickUpdate}
+        winningSquare={winningSquare}
+      />
+      <button type="button" onClick={newGame}>
+        Start New Game
+      </button>
       <History history={history} moveTo={moveTo} currentMove={currentMove} />
     </div>
   );
